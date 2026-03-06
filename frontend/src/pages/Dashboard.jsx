@@ -229,7 +229,7 @@ const Dashboard = () => {
                                 }}
                                 initialPosition={currentLocation ? [currentLocation.lat, currentLocation.lng] : [51.505, -0.09]}
                             />
-                            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+                            <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', marginTop: '0.5rem', fontWeight: '500' }}>
                                 Click the map or use the search icon inside the map to pin a location.
                             </p>
                         </div>
