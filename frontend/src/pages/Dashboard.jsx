@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { getExifLocation, updateExifLocation, stripExifLocation } from '../utils/exifHelper';
+import { getExifLocation, updateExifMetadata, stripExifLocation } from '../utils/exifHelper';
 import { compressImage, fileToBase64, base64ToFile } from '../utils/imageCompressor';
 import { UploadCloud, MapPin, Download, Settings2, Trash2 } from 'lucide-react';
 import LocationPicker from '../components/LocationPicker';
@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [currentLocation, setCurrentLocation] = useState(null);
     const [newLat, setNewLat] = useState('');
     const [newLng, setNewLng] = useState('');
+    const [metaName, setMetaName] = useState('');
 
     // Output settings
     const [exportFormat, setExportFormat] = useState('image/jpeg');
@@ -86,14 +87,14 @@ const Dashboard = () => {
                 fileType: exportFormat
             });
 
-            // 2. Modify EXIF location (Only if JPEG, as piexifjs only supports JPEG)
+            // 2. Modify EXIF location and metadata (Only if JPEG, as piexifjs only supports JPEG)
             let finalDataUrl = await fileToBase64(compressedFile);
 
             if (exportFormat === 'image/jpeg') {
-                if (newLat && newLng) {
-                    finalDataUrl = updateExifLocation(finalDataUrl, parseFloat(newLat), parseFloat(newLng));
+                if ((newLat && newLng) || metaName) {
+                    finalDataUrl = updateExifMetadata(finalDataUrl, parseFloat(newLat), parseFloat(newLng), metaName);
                 } else {
-                    finalDataUrl = stripExifLocation(finalDataUrl); // Ensure it's stripped if left blank
+                    finalDataUrl = stripExifLocation(finalDataUrl, metaName); // Ensure it's stripped if left blank, but meta name might be set
                 }
             }
 
@@ -169,7 +170,7 @@ const Dashboard = () => {
                                 <button
                                     className="btn btn-secondary"
                                     style={{ position: 'absolute', top: 10, right: 10, width: 'auto', padding: '0.5rem 1rem', background: 'rgba(0,0,0,0.6)', border: 'none' }}
-                                    onClick={() => { setFile(null); setPreviewUrl(''); setCurrentLocation(null); setNewLat(''); setNewLng(''); }}
+                                    onClick={() => { setFile(null); setPreviewUrl(''); setCurrentLocation(null); setNewLat(''); setNewLng(''); setMetaName(''); }}
                                 >
                                     <Trash2 size={16} color="var(--danger)" /> Clear
                                 </button>
@@ -237,12 +238,23 @@ const Dashboard = () => {
                         <button
                             className="btn btn-secondary"
                             style={{ marginBottom: '2rem' }}
-                            onClick={() => { setNewLat(''); setNewLng(''); }}
+                            onClick={() => { setNewLat(''); setNewLng(''); setMetaName(''); }}
                         >
                             <Trash2 size={16} /> Strip Location Data
                         </button>
 
                         <h4 style={{ color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.85rem', textTransform: 'uppercase' }}>Export Settings</h4>
+
+                        <div className="form-group">
+                            <label className="form-label">Custom Meta Name</label>
+                            <input
+                                type="text"
+                                className="form-input"
+                                placeholder="e.g. NextGenKerala, Artist Name..."
+                                value={metaName}
+                                onChange={(e) => setMetaName(e.target.value)}
+                            />
+                        </div>
 
                         <div className="form-group">
                             <label className="form-label">Export Format</label>

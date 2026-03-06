@@ -17,19 +17,21 @@ function degToDmsRational(degrees) {
 
 /**
  * Removes existing GPS data and sets new GPS location data.
+ * Also allows setting a custom Meta Name (ImageDescription).
  * @param {string} fileData - The base64 Image data URL
  * @param {number} lat - Latitude
  * @param {number} lng - Longitude
+ * @param {string} metaName - Custom Meta Name string
  * @returns {string} - Modified Image data URL
  */
-export const updateExifLocation = (fileData, lat, lng) => {
+export const updateExifMetadata = (fileData, lat, lng, metaName = '') => {
     try {
         const exifObj = piexif.load(fileData);
 
         // Clear existing GPS data completely first
         exifObj["GPS"] = {};
 
-        if (lat !== null && lng !== null) {
+        if (lat !== null && lng !== null && !isNaN(lat) && !isNaN(lng)) {
             const latRef = lat >= 0 ? "N" : "S";
             const lngRef = lng >= 0 ? "E" : "W";
 
@@ -43,6 +45,16 @@ export const updateExifLocation = (fileData, lat, lng) => {
             exifObj["GPS"][piexif.GPSIFD.GPSLongitude] = lngDms;
         }
 
+        // Handle Custom Meta Name
+        if (!exifObj["0th"]) {
+            exifObj["0th"] = {};
+        }
+
+        if (metaName) {
+            exifObj["0th"][piexif.ImageIFD.ImageDescription] = metaName;
+            exifObj["0th"][piexif.ImageIFD.Artist] = metaName;
+        }
+
         const exifBytes = piexif.dump(exifObj);
         return piexif.insert(exifBytes, fileData);
     } catch (error) {
@@ -52,14 +64,22 @@ export const updateExifLocation = (fileData, lat, lng) => {
 };
 
 /**
- * Strips all GPS data from the image.
+ * Strips all GPS data from the image but can optionally apply a meta name.
  * @param {string} fileData 
+ * @param {string} metaName
  * @returns {string} - modified base64 string
  */
-export const stripExifLocation = (fileData) => {
+export const stripExifLocation = (fileData, metaName = '') => {
     try {
         const exifObj = piexif.load(fileData);
         exifObj["GPS"] = {};
+
+        if (metaName) {
+            if (!exifObj["0th"]) exifObj["0th"] = {};
+            exifObj["0th"][piexif.ImageIFD.ImageDescription] = metaName;
+            exifObj["0th"][piexif.ImageIFD.Artist] = metaName;
+        }
+
         const exifBytes = piexif.dump(exifObj);
         return piexif.insert(exifBytes, fileData);
     } catch (error) {
