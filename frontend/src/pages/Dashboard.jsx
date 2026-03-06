@@ -124,7 +124,7 @@ const Dashboard = () => {
         <div style={{ paddingBottom: '3rem' }}>
             <nav className="navbar">
                 <Link to="/" className="nav-brand">
-                    <MapPin color="var(--primary)" size={28} />
+                    <img src="/logo.svg" alt="SwichLocation Logo" style={{ height: '32px', width: 'auto' }} />
                     SwichLocation
                 </Link>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
