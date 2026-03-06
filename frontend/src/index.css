@@ -506,8 +506,18 @@ h3 {
 }
 
 /* Map Readability Overrides */
-.leaflet-control-geosearch form input {
+.leaflet-control-geosearch form input,
+.leaflet-control-geosearch .results * {
   color: #0F172A !important;
   font-family: 'Outfit', sans-serif;
   font-weight: 500;
+}
+
+.leaflet-control-geosearch .results.active {
+  background-color: white !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.leaflet-control-geosearch .results>div:hover {
+  background-color: #F8FAFC !important;
 }
