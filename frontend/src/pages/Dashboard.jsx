@@ -4,6 +4,7 @@ import { getExifLocation, updateExifMetadata, stripExifLocation } from '../utils
 import { compressImage, fileToBase64, base64ToFile } from '../utils/imageCompressor';
 import { UploadCloud, MapPin, Download, Settings2, Trash2 } from 'lucide-react';
 import LocationPicker from '../components/LocationPicker';
+import Footer from '../components/Footer';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -293,6 +294,9 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+
+            {/* New Footer Integration */}
+            <Footer />
         </div>
     );
 };
