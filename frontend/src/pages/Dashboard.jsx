@@ -18,6 +18,7 @@ const Dashboard = () => {
     const [newLat, setNewLat] = useState('');
     const [newLng, setNewLng] = useState('');
     const [metaName, setMetaName] = useState('');
+    const [customFileName, setCustomFileName] = useState('');
 
     // Output settings
     const [exportFormat, setExportFormat] = useState('image/jpeg');
@@ -101,7 +102,9 @@ const Dashboard = () => {
 
             // 3. Trigger Download
             const ext = exportFormat.split('/')[1];
-            const newFilename = `swichlocation_${Date.now()}.${ext}`;
+            // Format custom name (replace spaces with logic, ensure it's safe) or fallback to swichlocation_time
+            const safeCustomName = customFileName.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            const newFilename = safeCustomName ? `${safeCustomName}.${ext}` : `swichlocation_${Date.now()}.${ext}`;
 
             const a = document.createElement('a');
             a.href = finalDataUrl;
@@ -171,7 +174,7 @@ const Dashboard = () => {
                                 <button
                                     className="btn btn-secondary"
                                     style={{ position: 'absolute', top: 10, right: 10, width: 'auto', padding: '0.5rem 1rem', background: 'rgba(0,0,0,0.6)', border: 'none' }}
-                                    onClick={() => { setFile(null); setPreviewUrl(''); setCurrentLocation(null); setNewLat(''); setNewLng(''); setMetaName(''); }}
+                                    onClick={() => { setFile(null); setPreviewUrl(''); setCurrentLocation(null); setNewLat(''); setNewLng(''); setMetaName(''); setCustomFileName(''); }}
                                 >
                                     <Trash2 size={16} color="var(--danger)" /> Clear
                                 </button>
@@ -254,6 +257,17 @@ const Dashboard = () => {
                                 placeholder="e.g. NextGenKerala, Artist Name..."
                                 value={metaName}
                                 onChange={(e) => setMetaName(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label">Download File Name</label>
+                            <input
+                                type="text"
+                                className="form-input"
+                                placeholder="e.g. my_photo (default: swichlocation_...)"
+                                value={customFileName}
+                                onChange={(e) => setCustomFileName(e.target.value)}
                             />
                         </div>
 
