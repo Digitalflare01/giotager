@@ -4,9 +4,9 @@
 // Database configuration
 // Change these settings if you move to a different server
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'swichlocation');
+define('DB_USER', 'u197294049_location');
+define('DB_PASS', 'Parayulla@123');
+define('DB_NAME', 'u197294049_swichlocation');
 
 // Enable CORS for development
 header("Access-Control-Allow-Origin: *");
@@ -24,7 +24,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // Set default fetch mode to associative array
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     die(json_encode(["status" => "error", "message" => "Connection failed: " . $e->getMessage()]));
 }
 ?>
