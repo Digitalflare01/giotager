@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getExifLocation, updateExifLocation, stripExifLocation } from '../utils/exifHelper';
 import { compressImage, fileToBase64, base64ToFile } from '../utils/imageCompressor';
 import { UploadCloud, MapPin, Download, Settings2, Trash2 } from 'lucide-react';
