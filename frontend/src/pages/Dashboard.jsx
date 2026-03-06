@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { getExifLocation, updateExifLocation, stripExifLocation } from '../utils/exifHelper';
 import { compressImage, fileToBase64, base64ToFile } from '../utils/imageCompressor';
 import { UploadCloud, MapPin, Download, Settings2, Trash2 } from 'lucide-react';
+import LocationPicker from '../components/LocationPicker';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -217,6 +218,20 @@ const Dashboard = () => {
                                 value={newLng}
                                 onChange={(e) => setNewLng(e.target.value)}
                             />
+                        </div>
+
+                        <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                            <label className="form-label">Pick on Map</label>
+                            <LocationPicker
+                                onLocationSelect={(lat, lng) => {
+                                    setNewLat(lat.toFixed(6));
+                                    setNewLng(lng.toFixed(6));
+                                }}
+                                initialPosition={currentLocation ? [currentLocation.lat, currentLocation.lng] : [51.505, -0.09]}
+                            />
+                            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+                                Click the map or use the search icon inside the map to pin a location.
+                            </p>
                         </div>
 
                         <button
