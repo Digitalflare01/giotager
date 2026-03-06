@@ -504,3 +504,10 @@ h3 {
     margin-top: 1rem;
   }
 }
+
+/* Map Readability Overrides */
+.leaflet-control-geosearch form input {
+  color: #0F172A !important;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+}
