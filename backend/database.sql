@@ -23,3 +23,11 @@ CREATE TABLE IF NOT EXISTS uploads (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- Note: To manually create a user through the database (e.g. via phpMyAdmin),
+-- you can use the following SQL query. Note that the password should ideally be hashed,
+-- but if you are creating it manually and the system checks password_verify(), 
+-- you'll need a pre-hashed string.
+-- Example of inserting a user (with a dummy hashed password for 'password123'):
+-- INSERT INTO users (email, password, contact_number) 
+-- VALUES ('admin@example.com', '$2y$10$wT0XhYpXlJvW.M/.8PZp.eiq6m1d0LwRcwRjGfR/M18Q6GXZfXy1.', '+1234567890');

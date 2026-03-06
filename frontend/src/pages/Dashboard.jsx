@@ -2,13 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getExifLocation, updateExifLocation, stripExifLocation } from '../utils/exifHelper';
 import { compressImage, fileToBase64, base64ToFile } from '../utils/imageCompressor';
-import { UploadCloud, MapPin, Download, LogOut, Settings2, Trash2 } from 'lucide-react';
+import { UploadCloud, MapPin, Download, Settings2, Trash2 } from 'lucide-react';
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
 
-    const [user, setUser] = useState(null);
     const [file, setFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
 
@@ -23,17 +22,7 @@ const Dashboard = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
 
-    useEffect(() => {
-        const userData = localStorage.getItem('swichlocation_user');
-        if (userData) {
-            setUser(JSON.parse(userData));
-        }
-    }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem('swichlocation_user');
-        navigate('/login');
-    };
+    // Removed auth effect and logout handler
 
     const showMessage = (type, text) => {
         setMessage({ type, text });
@@ -138,10 +127,7 @@ const Dashboard = () => {
                     SwichLocation
                 </Link>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                    <span style={{ color: 'var(--text-secondary)' }}>Welcome, {user?.email}</span>
-                    <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', width: 'auto' }}>
-                        <LogOut size={16} /> Logout
-                    </button>
+                    <span style={{ color: 'var(--text-secondary)' }}>Free EXIF Editor</span>
                 </div>
             </nav>
 
